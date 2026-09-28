@@ -55,8 +55,8 @@ const sourceUrl = "https://github.com/Mahad-lab/EasyFuel-Subsidy-PK";
         </div>
         <div>
           <label for="reg-date">Registration date</label>
-          <input id="reg-date" name="reg-date" inputmode="numeric" pattern="[0-9]{8}" maxlength="8" placeholder="16052017" aria-describedby="date-help" required />
-          <small id="date-help">DDMMYYYY, for example 16052017.</small>
+          <input id="reg-date" name="reg-date" type="date" aria-describedby="date-help" required />
+          <small id="date-help">Date is formated as DDMMYYYY</small>
         </div>
       </div>
 
@@ -88,22 +88,26 @@ const sourceUrl = "https://github.com/Mahad-lab/EasyFuel-Subsidy-PK";
     const preview = document.querySelector<HTMLOutputElement>("#sms-preview");
     const sendLink = document.querySelector<HTMLAnchorElement>("#send-registration");
 
-    const isValidDate = (value: string) => {
-      if (!/^\d{8}$/.test(value)) return false;
-      const day = Number(value.slice(0, 2));
-      const month = Number(value.slice(2, 4));
-      const year = Number(value.slice(4));
+    const toSmsDate = (value: string) => {
+      const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+      if (!match) return null;
+      const [, yearText, monthText, dayText] = match;
+      const year = Number(yearText);
+      const month = Number(monthText);
+      const day = Number(dayText);
       const date = new Date(Date.UTC(year, month - 1, day));
-      return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day;
+      if (date.getUTCFullYear() !== year || date.getUTCMonth() !== month - 1 || date.getUTCDate() !== day) return null;
+      return `${dayText}${monthText}${yearText}`;
     };
 
     const updateMessage = () => {
       const vehicleNumber = vehicle.value.toUpperCase().replace(/[\s-]/g, "");
-      const valid = /^\d{13}$/.test(cnic.value) && /^[A-Z0-9]+$/.test(vehicleNumber) && province.value !== "" && isValidDate(registrationDate.value);
+      const smsDate = toSmsDate(registrationDate.value);
+      const valid = /^\d{13}$/.test(cnic.value) && /^[A-Z0-9]+$/.test(vehicleNumber) && province.value !== "" && smsDate !== null;
 
       if (preview) {
         preview.value = valid
-          ? `REG ${cnic.value} ${vehicleNumber} ${province.value} ${registrationDate.value}`
+          ? `REG ${cnic.value} ${vehicleNumber} ${province.value} ${smsDate}`
           : "REG [CNIC] [VEHICLE] [REGION] [DDMMYYYY]";
       }
 
@@ -111,7 +115,7 @@ const sourceUrl = "https://github.com/Mahad-lab/EasyFuel-Subsidy-PK";
         sendLink.setAttribute("aria-disabled", String(!valid));
         sendLink.classList.toggle("is-disabled", !valid);
         if (valid) {
-          const message = `REG ${cnic.value} ${vehicleNumber} ${province.value} ${registrationDate.value}`;
+          const message = `REG ${cnic.value} ${vehicleNumber} ${province.value} ${smsDate}`;
           sendLink.href = `sms:9771?body=${encodeURIComponent(message)}`;
         } else {
           sendLink.removeAttribute("href");
@@ -128,7 +132,7 @@ const sourceUrl = "https://github.com/Mahad-lab/EasyFuel-Subsidy-PK";
 </script>
 
 <style>
-  .hero-shell { display: grid; grid-template-columns: minmax(0, 1fr) minmax(360px, 0.82fr); align-items: center; gap: clamp(2.5rem, 7vw, 6.5rem); padding: clamp(3rem, 7vw, 6.5rem) 0 5rem; }
+  .hero-shell { display: grid; grid-template-columns: minmax(0, 1fr) minmax(360px, 0.82fr); align-items: center; gap: clamp(2.5rem, 7vw, 6.5rem); padding: clamp(3rem, 0vw, 6.5rem) 0 5rem; }
   .hero-copy { max-width: 670px; }
   .hero-eyebrow, .builder-kicker { margin: 0; color: #047857; font-size: .75rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
   .hero-eyebrow { display: flex; align-items: center; gap: .55rem; }
