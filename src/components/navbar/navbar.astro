@@ -1,99 +1,54 @@
 ---
 import Container from "@/components/container.astro";
-import Link from "@/components/ui/link.astro";
-import Dropdown from "./dropdown.astro";
+import { Icon } from "astro-icon/components";
 import { Astronav, MenuItems, MenuIcon } from "astro-navbar";
 
-const menuitems = [
-  {
-    title: "Features",
-    path: "#",
-    children: [
-      { title: "Action", path: "/" },
-      { title: "Another action", path: "#" },
-      { title: "Dropdown Submenu", path: "#" },
-      { title: "404 Page", path: "/404" },
-    ],
-  },
-  {
-    title: "Pricing",
-    path: "/pricing",
-  },
-  {
-    title: "About",
-    path: "/about",
-  },
-  {
-    title: "Blog",
-    path: "/blog",
-  },
-  {
-    title: "Contact",
-    path: "/contact",
-  },
-  {
-    title: "Pro Version",
-    badge: true,
-    path: "https://astroship-pro.web3templates.com/",
-  },
-];
+const sourceUrl = "https://github.com/Mahad-lab/EasyFuel-Subsidy-PK";
 ---
 
 <Container>
-  <header class="flex flex-col lg:flex-row justify-between items-center my-5">
+  <header class="site-header">
     <Astronav>
-      <div class="flex w-full lg:w-auto items-center justify-between">
-        <a href="/" class="text-lg"
-          ><span class="font-bold text-slate-800">Astro</span><span
-            class="text-slate-500">ship</span
-          >
+      <div class="nav-bar">
+        <a href="/" class="brand" aria-label="EasyFuel home">
+          <Icon name="bx:bx-shield-quarter" aria-hidden="true" />
+          <span>EasyFuel<span class="brand-domain">.pk</span></span>
         </a>
-        <div class="block lg:hidden">
-          <MenuIcon class="w-4 h-4 text-gray-800" />
-        </div>
+        <div class="mobile-menu"><MenuIcon class="w-5 h-5 text-slate-800" /></div>
+        <MenuItems class="nav-menu hidden lg:flex">
+          <nav aria-label="Main navigation">
+            <a href="#how-it-works">How it works</a>
+            <a href="#eligibility">Eligibility</a>
+            <a href="#generator">Generate SMS</a>
+            <a href="#faq">FAQ</a>
+            <a class="source-link" href={sourceUrl} target="_blank" rel="noreferrer">
+              <Icon name="bx:bxl-github" aria-hidden="true" /> View source
+            </a>
+          </nav>
+        </MenuItems>
       </div>
-      <MenuItems class="hidden w-full lg:w-auto mt-2 lg:flex lg:mt-0">
-        <ul class="flex flex-col lg:flex-row lg:gap-3">
-          {
-            menuitems.map((item, index) => (
-              <>
-                {item.children && (
-                  <Dropdown
-                    title={item.title}
-                    children={item.children}
-                    lastItem={index === menuitems.length - 1}
-                  />
-                )}
-
-                {!item.children && (
-                  <li>
-                    <a
-                      href={item.path}
-                      class="flex lg:px-3 py-2 items-center text-gray-600 hover:text-gray-900">
-                      <span> {item.title}</span>
-                      {item.badge && (
-                        <span class="ml-1 px-2 py-0.5 text-[10px] animate-pulse font-semibold uppercase text-white bg-indigo-600 rounded-full">
-                          New
-                        </span>
-                      )}
-                    </a>
-                  </li>
-                )}
-              </>
-            ))
-          }
-        </ul>
-        <div class="lg:hidden flex items-center mt-3 gap-4">
-          <Link href="#" style="muted" block size="md">Log in</Link>
-          <Link href="#" size="md" block>Sign up</Link>
-        </div>
-      </MenuItems>
     </Astronav>
-    <div>
-      <div class="hidden lg:flex items-center gap-4">
-        <a href="#">Log in</a>
-        <Link href="#" size="md">Sign up</Link>
-      </div>
-    </div>
   </header>
 </Container>
+
+<style>
+  .site-header { border-bottom: 1px solid #e5ebe7; }
+  .nav-bar { display: flex; min-height: 76px; align-items: center; justify-content: space-between; gap: 1.5rem; }
+  .brand { display: inline-flex; flex: 0 0 auto; align-items: center; gap: .45rem; color: #152b21; font-size: 1.05rem; font-weight: 800; text-decoration: none; }
+  .brand > svg { width: 1.35rem; height: 1.35rem; color: #059669; }
+  .brand-domain { color: #047857; }
+  .mobile-menu { display: block; }
+  .nav-menu { width: 100%; }
+  .nav-menu nav { display: flex; flex-direction: column; gap: .15rem; width: 100%; padding-bottom: .8rem; }
+  .nav-menu nav a { display: inline-flex; align-items: center; gap: .4rem; padding: .65rem .3rem; color: #53635d; font-size: .9rem; font-weight: 600; text-decoration: none; }
+  .nav-menu nav a:hover { color: #047857; }
+  .nav-menu .source-link { color: #047857; }
+  .source-link svg { width: 1rem; height: 1rem; }
+  @media (min-width: 1024px) {
+    .nav-bar { min-height: 82px; }
+    .mobile-menu { display: none; }
+    .nav-menu { width: auto; }
+    .nav-menu nav { flex-direction: row; align-items: center; gap: 1.5rem; padding: 0; }
+    .nav-menu nav a { padding: .55rem 0; }
+  }
+</style>

@@ -1,53 +1,175 @@
 ---
-import { Picture } from "astro:assets";
-import heroImage from "@/assets/hero.png";
-import Link from "@/components/ui/link.astro";
 import { Icon } from "astro-icon/components";
+
+const sourceUrl = "https://github.com/Mahad-lab/EasyFuel-Subsidy-PK";
 ---
 
-<main
-  class="grid lg:grid-cols-2 place-items-center pt-16 pb-8 md:pt-12 md:pb-24">
-  <div class="py-6 md:order-1 hidden md:block">
-    <Picture
-      src={heroImage}
-      alt="Astronaut in the air"
-      widths={[200, 400, 600]}
-      sizes="(max-width: 800px) 100vw, 620px"
-      loading="eager"
-      format="avif"
-    />
-  </div>
-  <div>
-    <h1
-      class="text-5xl lg:text-6xl xl:text-7xl font-bold lg:tracking-tight xl:tracking-tighter">
-      Marketing website done with Astro
-    </h1>
-    <p class="text-lg mt-4 text-slate-600 max-w-xl">
-      Astroship is a starter template for startups, marketing websites & landing
-      pages.<wbr /> Built with Astro.build and TailwindCSS. You can quickly create
-      any website with this starter.
+<main class="hero-shell">
+  <div class="hero-copy">
+    <p class="hero-eyebrow"><span aria-hidden="true"></span> Free to use · Open source · Private by design</p>
+    <h1>Claim your Rs. 100/litre petrol discount <em>without SMS syntax mistakes.</em></h1>
+    <p class="hero-description">
+      Stop guessing spaces, dates, and province codes. Build a registration text for 9771 in seconds. Your details stay in this browser.
     </p>
-    <div class="mt-6 flex flex-col sm:flex-row gap-3">
-      <Link
-        href="#"
-        href="https://web3templates.com/templates/astroship-starter-website-template-for-astro"
-        target="_blank"
-        class="flex gap-1 items-center justify-center"
-        rel="noopener">
-        <Icon class="text-white w-5 h-5" name="bx:bxs-cloud-download" />
-
-        Download for Free
-      </Link>
-      <Link
-        size="lg"
-        style="outline"
-        rel="noopener"
-        href="https://github.com/surjithctly/astroship"
-        class="flex gap-1 items-center justify-center"
-        target="_blank">
-        <Icon class="text-black w-4 h-4" name="bx:bxl-github" />
-        GitHub Repo
-      </Link>
+    <div class="hero-links">
+      <a class="hero-primary" href="#generator">Generate your SMS <span aria-hidden="true">↓</span></a>
+      <a class="hero-secondary" href={sourceUrl} target="_blank" rel="noreferrer">
+        <Icon name="bx:bxl-github" aria-hidden="true" /> Inspect the source
+      </a>
     </div>
+    <p class="hero-note"><Icon name="bx:bx-shield-quarter" aria-hidden="true" /> No account. No form uploads. No personal-data storage.</p>
   </div>
+
+  <section class="builder" id="generator" aria-labelledby="builder-title">
+    <div class="builder-heading">
+      <div>
+        <p class="builder-kicker">SMS BUILDER · SHORTCODE 9771</p>
+        <h2 id="builder-title">Prepare your registration text</h2>
+      </div>
+      <span class="builder-lock" aria-label="Processed in your browser"><Icon name="bx:bx-lock-alt" aria-hidden="true" /></span>
+    </div>
+    <p class="builder-intro">Enter the vehicle owner and registration details exactly as recorded.</p>
+
+    <form id="registration-form" autocomplete="off" novalidate>
+      <label for="cnic">CNIC number</label>
+      <input id="cnic" name="cnic" inputmode="numeric" pattern="[0-9]{13}" maxlength="13" placeholder="6110114620675" aria-describedby="cnic-help" required />
+      <small id="cnic-help">13 digits, without dashes.</small>
+
+      <label for="vehicle">Vehicle registration number</label>
+      <input id="vehicle" name="vehicle" maxlength="16" placeholder="ADV811 or LEA1234" aria-describedby="vehicle-help" required />
+      <small id="vehicle-help">Enter letters and numbers without spaces or hyphens.</small>
+
+      <div class="builder-row">
+        <div>
+          <label for="province">Province / region</label>
+          <select id="province" name="province" required>
+            <option value="" selected disabled>Select region</option>
+            <option value="I">Islamabad Capital Territory</option>
+            <option value="P">Punjab</option>
+            <option value="S">Sindh</option>
+            <option value="K">Khyber Pakhtunkhwa</option>
+            <option value="B">Balochistan</option>
+            <option value="A">Azad Jammu &amp; Kashmir</option>
+            <option value="G">Gilgit-Baltistan</option>
+          </select>
+        </div>
+        <div>
+          <label for="reg-date">Registration date</label>
+          <input id="reg-date" name="reg-date" inputmode="numeric" pattern="[0-9]{8}" maxlength="8" placeholder="16052017" aria-describedby="date-help" required />
+          <small id="date-help">DDMMYYYY, for example 16052017.</small>
+        </div>
+      </div>
+
+      <div class="sms-preview">
+        <p>MESSAGE PREVIEW</p>
+        <output id="sms-preview" aria-live="polite">REG [CNIC] [VEHICLE] [REGION] [DDMMYYYY]</output>
+      </div>
+      <a id="send-registration" class="send-button is-disabled" href="#" aria-disabled="true">
+        <Icon name="bx:bx-message-rounded-dots" aria-hidden="true" /> Send registration SMS to 9771
+      </a>
+      <p class="builder-footnote">Your messaging app opens with the text filled in. Review it, then send.</p>
+    </form>
+
+    <div class="token-row">
+      <div><strong>Already registered?</strong><span>Request a fuel token instead.</span></div>
+      <a href="sms:9771?body=TOK" aria-label="Open SMS app with TOK addressed to 9771">Send TOK <span aria-hidden="true">↗</span></a>
+    </div>
+  </section>
 </main>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>("#registration-form");
+
+  if (form) {
+    const cnic = form.elements.namedItem("cnic") as HTMLInputElement;
+    const vehicle = form.elements.namedItem("vehicle") as HTMLInputElement;
+    const province = form.elements.namedItem("province") as HTMLSelectElement;
+    const registrationDate = form.elements.namedItem("reg-date") as HTMLInputElement;
+    const preview = document.querySelector<HTMLOutputElement>("#sms-preview");
+    const sendLink = document.querySelector<HTMLAnchorElement>("#send-registration");
+
+    const isValidDate = (value: string) => {
+      if (!/^\d{8}$/.test(value)) return false;
+      const day = Number(value.slice(0, 2));
+      const month = Number(value.slice(2, 4));
+      const year = Number(value.slice(4));
+      const date = new Date(Date.UTC(year, month - 1, day));
+      return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day;
+    };
+
+    const updateMessage = () => {
+      const vehicleNumber = vehicle.value.toUpperCase().replace(/[\s-]/g, "");
+      const valid = /^\d{13}$/.test(cnic.value) && /^[A-Z0-9]+$/.test(vehicleNumber) && province.value !== "" && isValidDate(registrationDate.value);
+
+      if (preview) {
+        preview.value = valid
+          ? `REG ${cnic.value} ${vehicleNumber} ${province.value} ${registrationDate.value}`
+          : "REG [CNIC] [VEHICLE] [REGION] [DDMMYYYY]";
+      }
+
+      if (sendLink) {
+        sendLink.setAttribute("aria-disabled", String(!valid));
+        sendLink.classList.toggle("is-disabled", !valid);
+        if (valid) {
+          const message = `REG ${cnic.value} ${vehicleNumber} ${province.value} ${registrationDate.value}`;
+          sendLink.href = `sms:9771?body=${encodeURIComponent(message)}`;
+        } else {
+          sendLink.removeAttribute("href");
+        }
+      }
+    };
+
+    form.addEventListener("input", updateMessage);
+    form.addEventListener("change", updateMessage);
+    sendLink?.addEventListener("click", (event) => {
+      if (sendLink.getAttribute("aria-disabled") === "true") event.preventDefault();
+    });
+  }
+</script>
+
+<style>
+  .hero-shell { display: grid; grid-template-columns: minmax(0, 1fr) minmax(360px, 0.82fr); align-items: center; gap: clamp(2.5rem, 7vw, 6.5rem); padding: clamp(3rem, 7vw, 6.5rem) 0 5rem; }
+  .hero-copy { max-width: 670px; }
+  .hero-eyebrow, .builder-kicker { margin: 0; color: #047857; font-size: .75rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+  .hero-eyebrow { display: flex; align-items: center; gap: .55rem; }
+  .hero-eyebrow span { width: .55rem; height: .55rem; border-radius: 50%; background: #059669; box-shadow: 0 0 0 4px #d1fae5; }
+  h1 { margin: 1.35rem 0 1.1rem; max-width: 760px; color: #10231d; font-size: clamp(2.6rem, 5vw, 4.65rem); font-weight: 800; line-height: 1.04; }
+  h1 em { color: #047857; font-style: normal; }
+  .hero-description { max-width: 550px; color: #53635d; font-size: 1.1rem; line-height: 1.7; }
+  .hero-links { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem; margin-top: 1.8rem; }
+  .hero-primary, .hero-secondary { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; gap: .55rem; padding: 0 1.1rem; font-weight: 700; text-decoration: none; }
+  .hero-primary { border: 1px solid #047857; border-radius: 4px; background: #047857; color: white; }
+  .hero-primary:hover { background: #065f46; }
+  .hero-secondary { border: 1px solid #d5ded9; border-radius: 4px; color: #263b32; }
+  .hero-secondary svg { width: 1.15rem; height: 1.15rem; }
+  .hero-note { display: flex; align-items: center; gap: .45rem; margin-top: 1.4rem; color: #62736b; font-size: .88rem; }
+  .hero-note svg { width: 1rem; height: 1rem; color: #047857; }
+  .builder { padding: 1.65rem; border: 1px solid #dce5df; border-top: 4px solid #059669; border-radius: 6px; background: white; box-shadow: 0 18px 50px rgb(16 35 29 / 8%); }
+  .builder-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .builder h2 { margin: .4rem 0 0; color: #142820; font-size: 1.3rem; font-weight: 750; }
+  .builder-lock { display: grid; width: 2.5rem; height: 2.5rem; flex: 0 0 auto; place-items: center; border-radius: 50%; background: #e7f5ed; color: #047857; }
+  .builder-lock svg { width: 1.2rem; height: 1.2rem; }
+  .builder-intro { margin: .7rem 0 1.1rem; color: #64756d; font-size: .9rem; line-height: 1.5; }
+  #registration-form { display: grid; }
+  #registration-form label { margin: .65rem 0 .35rem; color: #293c33; font-size: .82rem; font-weight: 700; }
+  #registration-form input, #registration-form select { width: 100%; min-height: 42px; border: 1px solid #cbd7d0; border-radius: 3px; background: #fff; padding: .55rem .7rem; color: #193127; font: inherit; font-size: .92rem; }
+  #registration-form input:focus, #registration-form select:focus { border-color: #059669; outline: 2px solid #a7f3d0; outline-offset: 1px; }
+  #registration-form small { margin-top: .22rem; color: #728078; font-size: .75rem; }
+  .builder-row { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+  .builder-row > div { min-width: 0; }
+  .sms-preview { margin-top: 1rem; padding: .75rem .85rem; border: 1px solid #e1e9e4; border-radius: 3px; background: #f6f9f7; }
+  .sms-preview p { margin: 0 0 .35rem; color: #74827a; font-size: .65rem; font-weight: 800; letter-spacing: .08em; }
+  .sms-preview output { display: block; min-height: 1.5rem; overflow-wrap: anywhere; color: #214335; font-family: ui-monospace, monospace; font-size: .82rem; line-height: 1.5; }
+  .send-button { display: flex; min-height: 46px; align-items: center; justify-content: center; gap: .5rem; margin-top: .8rem; border-radius: 3px; background: #047857; color: white; font-size: .88rem; font-weight: 750; text-align: center; text-decoration: none; }
+  .send-button:hover { background: #065f46; }
+  .send-button svg { width: 1.15rem; height: 1.15rem; }
+  .send-button.is-disabled { background: #aebbb3; cursor: not-allowed; }
+  .builder-footnote { margin: .5rem 0 0; color: #76847d; font-size: .72rem; text-align: center; }
+  .token-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1.2rem; padding-top: 1rem; border-top: 1px solid #e5ebe7; }
+  .token-row div { display: grid; gap: .15rem; }
+  .token-row strong { color: #263b32; font-size: .82rem; }
+  .token-row span { color: #718078; font-size: .75rem; }
+  .token-row a { flex: 0 0 auto; color: #047857; font-size: .82rem; font-weight: 750; text-decoration: none; }
+  @media (max-width: 800px) { .hero-shell { grid-template-columns: minmax(0, 1fr); gap: 2.5rem; padding-top: 3.2rem; } .hero-copy { max-width: 660px; } }
+  @media (max-width: 480px) { .builder { padding: 1.15rem; } .builder-row { grid-template-columns: 1fr; gap: 0; } .hero-links { align-items: stretch; flex-direction: column; } .hero-primary, .hero-secondary { width: 100%; } }
+</style>

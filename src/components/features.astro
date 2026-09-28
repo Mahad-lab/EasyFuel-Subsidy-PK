@@ -4,66 +4,60 @@ import { Icon } from "astro-icon/components";
 
 const features = [
   {
-    title: "Bring Your Own Framework",
+    title: "Private by design",
     description:
-      "Build your site using React, Svelte, Vue, Preact, web components, or just plain ol' HTML + JavaScript.",
-    icon: "bx:bxs-briefcase",
+      "CNIC and vehicle details are processed in your browser and are never uploaded or stored by this tool.",
+    icon: "bx:bx-shield-quarter",
   },
   {
-    title: "100% Static HTML, No JS",
+    title: "Clear SMS formatting",
     description:
-      "Astro renders your entire page to static HTML, removing all JavaScript from your final build by default.",
-    icon: "bx:bxs-window-alt",
+      "Build the REG message with the selected region code and DDMMYYYY date in the expected order.",
+    icon: "bx:bx-message-square-check",
   },
   {
-    title: "On-Demand Components",
+    title: "One-tap handoff",
     description:
-      "Need some JS? Astro can automatically hydrate interactive components when they become visible on the page.  ",
-    icon: "bx:bxs-data",
+      "Open your device's messaging app with the registration text addressed to shortcode 9771.",
+    icon: "bx:bx-send",
   },
   {
-    title: "Broad Integration",
+    title: "Open source",
     description:
-      "Astro supports TypeScript, Scoped CSS, CSS Modules, Sass, Tailwind, Markdown, MDX, and any other npm packages.",
-    icon: "bx:bxs-bot",
-  },
-  {
-    title: "SEO Enabled",
-    description:
-      "Automatic sitemaps, RSS feeds, pagination and collections take the pain out of SEO and syndication. It just works!",
-    icon: "bx:bxs-file-find",
-  },
-  {
-    title: "Community",
-    description:
-      "Astro is an open source project powered by hundreds of contributors making thousands of individual contributions.",
-    icon: "bx:bxs-user",
+      "Built for the community. Review how the generator works in the public source.",
+    icon: "bx:bxl-github",
   },
 ];
 ---
 
-<div class="mt-16 md:mt-0">
-  <h2 class="text-4xl lg:text-5xl font-bold lg:tracking-tight">
-    Everything you need to start a website
-  </h2>
-  <p class="text-lg mt-4 text-slate-600">
-    Astro comes batteries included. It takes the best parts of state-of-the-art
-    tools and adds its own innovations.
-  </p>
-</div>
+<section class="feature-section" aria-labelledby="features-title">
+  <div class="section-heading">
+    <p class="section-kicker">BUILT FOR PEOPLE, NOT DATA COLLECTION</p>
+    <h2 id="features-title">Less typing. More clarity.</h2>
+    <p>Everything needed to prepare a message, with personal details kept on your device.</p>
+  </div>
 
-<div class="grid sm:grid-cols-2 md:grid-cols-3 mt-16 gap-16">
+<div class="grid sm:grid-cols-2 mt-10 gap-x-12 gap-y-10">
   {
     features.map((item) => (
       <div class="flex gap-4 items-start">
-        <div class="mt-1 bg-black rounded-full  p-2 w-8 h-8 shrink-0">
-          <Icon class="text-white" name={item.icon} />
+        <div class="mt-1 bg-emerald-100 rounded-sm p-2 w-10 h-10 shrink-0">
+          <Icon class="text-emerald-800 w-6 h-6" name={item.icon} />
         </div>
         <div>
           <h3 class="font-semibold text-lg">{item.title}</h3>{" "}
-          <p class="text-slate-500 mt-2 leading-relaxed">{item.description}</p>
+          <p class="text-slate-600 mt-2 leading-relaxed">{item.description}</p>
         </div>
       </div>
     ))
   }
 </div>
+</section>
+
+<style>
+  .feature-section { padding: 4rem 0 5rem; border-top: 1px solid #e5ebe7; }
+  .section-heading { max-width: 620px; }
+  .section-kicker { margin: 0; color: #047857; font-size: .72rem; font-weight: 800; letter-spacing: .08em; }
+  .section-heading h2 { margin: .55rem 0; color: #142820; font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 800; line-height: 1.15; }
+  .section-heading > p:last-child { color: #62736b; line-height: 1.65; }
+</style>

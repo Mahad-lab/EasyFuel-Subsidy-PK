@@ -1,17 +1,83 @@
 ---
 import Container from "@/components/container.astro";
-import Cta from "@/components/cta.astro";
 import Features from "@/components/features.astro";
 import Hero from "@/components/hero.astro";
-import Logos from "@/components/logos.astro";
 import Layout from "@/layouts/Layout.astro";
 ---
 
-<Layout title="">
+<Layout title="Instant SMS Generator for Pakistan's Petrol Relief Scheme">
   <Container>
     <Hero />
     <Features />
-    <Logos />
-    <Cta />
+    <section class="scheme-section" id="eligibility" aria-labelledby="scheme-title">
+      <div class="section-intro">
+        <p class="section-kicker">SCHEME AT A GLANCE</p>
+        <h2 id="scheme-title">Eligibility and monthly quota</h2>
+        <p>Use the official scheme channels to confirm your eligibility and current terms before visiting a pump.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th scope="col">Vehicle category</th><th scope="col">Engine limit</th><th scope="col">Monthly quota</th><th scope="col">Per token</th><th scope="col">Subsidy rate</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Bikes, rickshaws &amp; Qingqis</th><td>All sizes</td><td>20 litres</td><td>5 litres</td><td>Rs. 100 / litre</td></tr>
+            <tr><th scope="row">Small passenger cars</th><td>Up to 800cc</td><td>30 litres</td><td>10 litres</td><td>Rs. 100 / litre</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="scheme-note"><strong>Important:</strong> The SIM used to send the SMS must be registered under the same CNIC as the vehicle owner. Quotas and eligibility are determined by the government scheme and may change.</p>
+    </section>
+
+    <section class="steps-section" id="how-it-works" aria-labelledby="steps-title">
+      <div class="section-intro">
+        <p class="section-kicker">THREE STEPS</p>
+        <h2 id="steps-title">From registration to fuel</h2>
+      </div>
+      <ol class="steps-list">
+        <li><span class="step-number">01</span><div><h3>Send registration text</h3><p>Generate the REG message above and send it to 9771. Wait for verification through the official scheme systems.</p></div></li>
+        <li><span class="step-number">02</span><div><h3>Request a fuel token</h3><p>Before visiting a participating petrol pump, send TOK to 9771 and wait for your voucher message.</p></div></li>
+        <li><span class="step-number">03</span><div><h3>Redeem at the pump</h3><p>Show the received token to the fuel attendant before fueling starts. The official scheme determines the discount applied.</p></div></li>
+      </ol>
+    </section>
+
+    <section class="faq-section" id="faq" aria-labelledby="faq-title">
+      <div class="section-intro">
+        <p class="section-kicker">GOOD TO KNOW</p>
+        <h2 id="faq-title">Frequently asked questions</h2>
+      </div>
+      <div class="faq-list">
+        <details><summary>Is EasyFuel an official government app?</summary><p>No. EasyFuel is an independent, open-source utility that helps format SMS messages. Verification and subsidy decisions are made by the official government systems using shortcode 9771. This tool is not affiliated with the Government of Pakistan, NADRA, or any Excise department.</p></details>
+        <details><summary>Is my CNIC or vehicle data saved or sent anywhere?</summary><p>No. The generator formats your message locally in your browser. It does not upload, log, or store the information you enter. When you choose to send, your device's messaging app receives the SMS text and you decide whether to send it.</p></details>
+        <details><summary>Why might my registration SMS be rejected?</summary><p>Check that the SIM is registered under the vehicle owner's CNIC, the registration date is valid and entered as DDMMYYYY, and the vehicle meets the scheme's current eligibility rules. The official scheme can confirm the reason for a rejection.</p></details>
+        <details><summary>Does using this tool guarantee a discount?</summary><p>No. Eligibility verification, token availability, participating locations, and any discount are controlled by the government scheme and may change. Confirm current details through official channels.</p></details>
+      </div>
+    </section>
   </Container>
 </Layout>
+
+<style>
+  .scheme-section, .steps-section, .faq-section { padding: 4.5rem 0; border-top: 1px solid #e5ebe7; }
+  .section-intro { max-width: 660px; margin-bottom: 2rem; }
+  .section-kicker { margin: 0; color: #047857; font-size: .72rem; font-weight: 800; letter-spacing: .08em; }
+  .section-intro h2 { margin: .55rem 0; color: #142820; font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 800; line-height: 1.15; }
+  .section-intro > p:last-child { color: #62736b; line-height: 1.65; }
+  .table-wrap { overflow-x: auto; border: 1px solid #dce5df; border-radius: 4px; }
+  table { width: 100%; border-collapse: collapse; text-align: left; }
+  th, td { min-width: 115px; padding: .95rem 1rem; border-bottom: 1px solid #e5ebe7; color: #52635b; font-size: .88rem; }
+  thead th { background: #f1f7f3; color: #263b32; font-size: .78rem; font-weight: 750; }
+  tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
+  tbody th { color: #263b32; font-weight: 700; }
+  .scheme-note { max-width: 800px; margin-top: 1rem; color: #66766e; font-size: .86rem; line-height: 1.6; }
+  .scheme-note strong { color: #9a5c00; }
+  .steps-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem; margin: 2.5rem 0 0; padding: 0; list-style: none; }
+  .steps-list li { display: flex; align-items: flex-start; gap: 1rem; }
+  .step-number { color: #d97706; font-size: 1.5rem; font-weight: 800; }
+  .steps-list h3 { margin: .1rem 0 .45rem; color: #21362c; font-size: 1.05rem; font-weight: 750; }
+  .steps-list p { margin: 0; color: #62736b; font-size: .9rem; line-height: 1.65; }
+  .faq-list { border-top: 1px solid #dce5df; }
+  .faq-list details { border-bottom: 1px solid #dce5df; }
+  .faq-list summary { padding: 1.1rem 0; color: #263b32; font-weight: 700; cursor: pointer; }
+  .faq-list details p { max-width: 850px; margin: -.25rem 0 1.15rem; color: #62736b; font-size: .92rem; line-height: 1.7; }
+  @media (max-width: 700px) { .steps-list { grid-template-columns: 1fr; gap: 1.4rem; } .scheme-section, .steps-section, .faq-section { padding: 3.3rem 0; } }
+</style>
